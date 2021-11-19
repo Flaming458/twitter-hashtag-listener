@@ -1,0 +1,24 @@
+{
+  "name": "twitter-hashtag-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flaming458/twitter-hashtag-listener.git"
+  },
+  "author": "Flaming458",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flaming458/twitter-hashtag-listener/issues"
+  },
+  "homepage": "https://github.com/Flaming458/twitter-hashtag-listener#readme",
+  "dependencies": {
+    "-": "^0.0.1",
+    "twit": "^2.2.11"
+  }
+}
