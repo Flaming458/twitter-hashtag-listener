@@ -1,4 +1,8 @@
 const http = require('http');
+const Twit = require('twit');
+const config = require('./config');
+
+console.log(config);
 
 // Handle GET Request
 const handleGetRequest = (req, res) => {
@@ -39,5 +43,18 @@ const server = http.createServer((req, res) => {
 server.listen(8080, () => {
   const { address, port } = server.address();
 
-  console.log(`Server is listening on: http://${address}:${port}`);
+  console.log(`Serveur lancé: http://localhost:${port}`);
 });
+
+
+let T = new Twit(config);
+
+
+
+const searchedData = (err, res) => {
+
+    console.log(res);
+
+}
+
+T.get('hashtag', params.hashtag,searchedData);
