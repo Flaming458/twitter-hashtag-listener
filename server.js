@@ -7,10 +7,21 @@ console.log(config);
 // Handle GET Request
 const handleGetRequest = (req, res) => {
   const options = {
-    hostname: 'twitter.com',
-    path: '/hashtag/SmashBrosUltimate',
+    hostname: 'api.twitter.com',
+    hashtag: '2/tweets/search/recent?query=from:twitterdev',
     method: 'GET'
   }
+
+  let T = new Twit(config);
+
+
+  const searchedData = (err, res) => {
+
+    console.log(res);
+
+}
+
+T.get(options.hostname, options.hashtag,searchedData);
 
   const request = http.request(options, (response) => {
     let data = '';
@@ -47,14 +58,6 @@ server.listen(8080, () => {
 });
 
 
-let T = new Twit(config);
 
 
 
-const searchedData = (err, res) => {
-
-    console.log(res);
-
-}
-
-T.get('hashtag', params.hashtag,searchedData);
