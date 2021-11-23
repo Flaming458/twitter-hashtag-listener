@@ -1,47 +1,40 @@
 const http = require('http');
-const Twit = require('twit');
+//const Twit = require('twit');
 const config = require('./config');
 
-console.log(config);
-
-// Handle GET Request
 const handleGetRequest = (req, res) => {
-  const options = {
-    hostname: 'api.twitter.com',
-    hashtag: '2/tweets/search/recent?query=from:twitterdev',
-    method: 'GET'
-  }
+    
+    const options = {
+        hostname: 'api.twitter.com',
+        path: '/2/tweets/search/recent?query=from:twitterdev',
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${config.bearer_token}`
+        }
+    }
 
-  let T = new Twit(config);
 
+    const request = http.request(options, (response) => {
+        let data = '';
 
-  const searchedData = (err, res) => {
+        response.on('data', (chunk) => {
+            data += chunk;
+        });
 
-    console.log(res);
-
-}
-
-T.get(options.hostname, options.hashtag,searchedData);
-
-  const request = http.request(options, (response) => {
-    let data = '';
-
-    response.on('data', (chunk) => {
-      data += chunk;
+        response.on('end', () => {
+            console.log(`Retrieved Data: ${ data }`);
+            res.end(data);
+        });
     });
-
-    response.on('end', (chunk) => {
-      res.end(data);
-    });
-  });
-
-  request.end()
+    request.end()
 }
 
 // Creates server instance
 const server = http.createServer((req, res) => {
   const { method } = req;
  
+  
+
   switch(method) {
     case 'GET':
       return handleGetRequest(req, res);
@@ -52,7 +45,7 @@ const server = http.createServer((req, res) => {
 
 // Starts server listening on specified port
 server.listen(8080, () => {
-  const { address, port } = server.address();
+  const { port } = server.address();
 
   console.log(`Serveur lancé: http://localhost:${port}`);
 });
