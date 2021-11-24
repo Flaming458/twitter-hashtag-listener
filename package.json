@@ -20,6 +20,7 @@
   "dependencies": {
     "-": "^0.0.1",
     "socket.io": "^4.4.0",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "twitter-api-v2": "^1.7.0"
   }
 }

@@ -1,60 +1,54 @@
 const http = require('http');
-const Twit = require('twit');
 const config = require('./config');
+const { TwitterApi } = require('twitter-api-v2');
 
-console.log(config);
-
-// Handle GET Request
 const handleGetRequest = (req, res) => {
-  const options = {
-    hostname: 'api.twitter.com',
-    hashtag: '2/tweets/search/recent?query=from:twitterdev',
-    method: 'GET'
-  }
+    
 
-  let T = new Twit(config);
+  
+    const options = {
+        hostname: 'api.twitter.com',
+        path: '/2/tweets/search/recent?query=cat%20has%3Amedia%20-grumpy&tweet.fields=created_at&max_results=100',
+        method: 'GET'
+        // headers: {
+        //     'Authorization': `Bearer ${config.bearer_token}`
+        // }
+    }
 
 
-  const searchedData = (err, res) => {
+    const request = http.request(options, response => {
+        let data = '';
 
-    console.log(res);
+        response.on('data', (chunk) => {
+            console.log(`Retrieved chunk: ${ chunk }`)
+            data += chunk;
+        });
 
-}
-
-T.get(options.hostname, options.hashtag,searchedData);
-
-  const request = http.request(options, (response) => {
-    let data = '';
-
-    response.on('data', (chunk) => {
-      data += chunk;
+        response.on('end', () => {
+            console.table(`Retrieved Data: ${ data }`);
+            res.end(data);
+        });
     });
-
-    response.on('end', (chunk) => {
-      res.end(data);
-    });
-  });
-
-  request.end()
+    request.end()
 }
 
 // Creates server instance
 const server = http.createServer((req, res) => {
-  const { method } = req;
+    const { method } = req;
  
-  switch(method) {
-    case 'GET':
-      return handleGetRequest(req, res);
-    default:
-      throw new Error(`Unsupported request method: ${method}`);
-  }
+    switch(method) {
+        case 'GET':
+            return handleGetRequest(req, res);
+        default:
+            throw new Error(`Unsupported request method: ${method}`);
+    }
 });
 
 // Starts server listening on specified port
 server.listen(8080, () => {
-  const { address, port } = server.address();
+    const { port } = server.address();
 
-  console.log(`Serveur lancé: http://localhost:${port}`);
+    console.log(`Serveur lancé: http://localhost:${port}`);
 });
 
 
